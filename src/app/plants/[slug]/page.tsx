@@ -1,27 +1,29 @@
+import { Metadata } from "next";
 import React from "react";
 import PlantCard from "./PlantCard";
 import { SignIn } from "@/components/AuthButtons";
 import { getPlantById } from "@/actions/plant.aciton";
 import { auth } from "@/lib/auth";
-// import { getPlantById } from '@/actions/plant.aciton';
-// import { stackServerApp } from '@/stack';
-// import { SignIn } from '@stackframe/stack';
 
+type SlugPageProps = {
+  params: { slug: string };
+};
+
+// ✅ Metadata function لازم تاخد نفس PageProps
 export async function generateMetadata({
   params,
-}: {
-  params: { slug: string };
-}) {
-  // Extract the id from the slug by splitting on the delimiter
+}: SlugPageProps): Promise<Metadata> {
   const [id] = params.slug.split("--");
   const plant = await getPlantById(id);
+
   return {
     title: plant ? plant.name : "Plant Details",
     description: plant ? plant.description : "Plant details page",
   };
 }
 
-async function page({ params }: { params: { slug: string } }) {
+// ✅ لازم اسمها Page مش page
+export default async function Page({ params }: SlugPageProps) {
   const session = await auth();
   const user = session?.user;
   const [id] = params.slug.split("--");
@@ -39,5 +41,3 @@ async function page({ params }: { params: { slug: string } }) {
     </div>
   );
 }
-
-export default page;
