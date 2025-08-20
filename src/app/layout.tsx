@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "react-hot-toast";
 
 const geist = Geist({
+  subsets: ["latin"],
   variable: "--font-geist-sans",
   weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
   preload: false,
