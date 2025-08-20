@@ -8,6 +8,7 @@ import { Toaster } from "react-hot-toast";
 const geist = Geist({
   variable: "--font-geist-sans",
   weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
+  preload: false,
 });
 
 export const metadata: Metadata = {
