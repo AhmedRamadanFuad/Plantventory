@@ -2,7 +2,6 @@
 
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
 export async function getUsers() {
@@ -19,11 +18,8 @@ export async function getUsers() {
 
 export async function getPlants() {
   const session = await auth();
-
   if (!session?.user?.email) return null;
-
   const user = await prisma.plant.findMany();
-
   return user;
 }
 
@@ -31,14 +27,20 @@ export async function getPlantById(id: string) {
   const plant = await prisma.plant.findUnique({
     where: { id },
   });
-
   return plant;
 }
-
+type Plant = {
+  name: string;
+  description: string;
+  stock: number;
+  price: number;
+  category: string;
+  userId: string;
+  imageUrl: string;
+};
 // create plants
-export async function createPlant(data) {
+export async function createPlant(data: Plant) {
   "use server";
-  console.log("creating plant");
   try {
     const session = await auth();
     const currentUserId = session?.user?.id;
@@ -57,16 +59,6 @@ export async function createPlant(data) {
     throw error;
   }
 }
-
-type Plant = {
-  name: string;
-  description: string;
-  stock: number;
-  price: number;
-  category: string;
-  userId: string;
-  imageUrl: string;
-};
 
 export async function editPlant(
   id: string, //identify which plant we are editing
@@ -102,21 +94,3 @@ export async function deletePlant(
   revalidatePath("/plants");
   return deletedPlant;
 }
-
-// export async function createPlant() {
-//   const session = await auth();
-//      const currentUserId = session?.user?.id;
-//   const newPlant = await prisma.plant.create({
-//     data: {
-//       name: "Aloe Vera",
-//       description: "Healing succulent plant",
-//       category: "Succulent",
-//       stock: 50,
-//       price: 12.5,
-//       imageUrl: "https://example.com/aloe.jpg",
-//       userId: currentUserId || '',
-//     },
-//   });
-//   return newPlant;
-// }
-// createPlant();

@@ -2,13 +2,24 @@ import { UploadButton } from "@/lib/uploadthing";
 import Image from "next/image";
 import React from "react";
 
-// interface ImageUploadProps {
-//   onChange: (url: string) => void;
-//   value: string;
-//   endpoint: "postImage";
-// }
+export interface ImageUploadFormData {
+  imageUrl: string;
+  name?: string;
+  description?: string;
+  stock?: number;
+  price?: number;
+  category?: string;
+  userId?: string;
+}
+export interface ImageUploadProps {
+  formData: ImageUploadFormData;
+  handleChange: (
+    field: keyof ImageUploadFormData,
+    value: string | number
+  ) => void;
+}
 
-function ImageUpload({ formData, handleChange }) {
+function ImageUpload({ formData, handleChange }: ImageUploadProps) {
   return (
     <div>
       <label>Plant Image</label>

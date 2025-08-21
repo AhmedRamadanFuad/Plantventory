@@ -46,17 +46,6 @@ export default function EditDialog({ plant }: EditDialogProps) {
   const handleSubmit = () => {
     editPlant(plant.id, formData);
   };
-  //   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  //     e.preventDefault();
-  //     try {
-  //       const newPlant = await editPlant(plant.id, formData);
-  //       console.log("plant edited: ", newPlant);
-  //       toast.success("Plant edited successfully");
-  //     } catch (error) {
-  //       console.error("error creating plant", error);
-  //       toast.error("Failed to edit plant");
-  //     }
-  //   };
 
   return (
     <AlertDialog>

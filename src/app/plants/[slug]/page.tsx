@@ -1,32 +1,17 @@
-import { Metadata } from "next";
 import React from "react";
 import PlantCard from "./PlantCard";
 import { SignIn } from "@/components/AuthButtons";
 import { getPlantById } from "@/actions/plant.aciton";
 import { auth } from "@/lib/auth";
-
-type SlugPageProps = {
-  params: { slug: string };
+type PageProps = {
+  params: Promise<{ slug: string }>;
 };
 
-// ✅ Metadata function لازم تاخد نفس PageProps
-export async function generateMetadata({
-  params,
-}: SlugPageProps): Promise<Metadata> {
-  const [id] = params.slug.split("--");
-  const plant = await getPlantById(id);
-
-  return {
-    title: plant ? plant.name : "Plant Details",
-    description: plant ? plant.description : "Plant details page",
-  };
-}
-
-// ✅ لازم اسمها Page مش page
-export default async function Page({ params }: SlugPageProps) {
+export default async function Page({ params }: PageProps) {
+  const { slug } = await params;
   const session = await auth();
   const user = session?.user;
-  const [id] = params.slug.split("--");
+  const [id] = slug.split("--");
   const plant = await getPlantById(id);
 
   if (!user) {
