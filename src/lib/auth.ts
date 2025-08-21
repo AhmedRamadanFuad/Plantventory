@@ -16,6 +16,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     strategy: "database",
     maxAge: 1 * 24 * 60 * 60,
   },
+  trustHost: true,
 });
 
 // export const authOption = {
